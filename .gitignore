@@ -1,0 +1,8 @@
+/venv
+/.idea
+*.cpython-36.pyc
+/*.sqlite3
+/logs
+/htmlcov
+*.pyc
+project/static/*

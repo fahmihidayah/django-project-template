@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block container %}
+
+<div class="row m-3" >
+    <div class="col-md-12">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-primary" role="alert">
+            {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+<div class="row m-3">
+
+    <div class="col-md-4">
+        <ul class="list-group">
+            <li class="list-group-item"> <a href="#"><i class="bi bi-person-fill"></i> Profile</a></li>
+            <li class="list-group-item"> <a href="#"><i class="bi bi-lock-fill"></i> Change Password</a></li>
+            <li class="list-group-item"> <a href="#"><i class="bi bi-gear-fill"></i> Setting</a></li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4>Profile</h4>
+            </div>
+            <div class="card-body">
+                {% crispy form %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock container %}

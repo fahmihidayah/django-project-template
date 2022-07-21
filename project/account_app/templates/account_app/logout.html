@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block container %}
+<div class="row justify-content-md-center">
+    <div class="col-md-5">
+        <br>
+        <div class="card">
+            <div class="card-header">
+                <h4>Log out</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" action="{% url 'logout' %}">
+                    {% csrf_token %}
+                    <p>Do you want to log out?</p>
+                    <button class="btn btn-danger" type="submit">Yes</button>
+                    <a class="btn btn-light" href="{% url 'profile' %}">No</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock container %}

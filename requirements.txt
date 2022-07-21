@@ -1,0 +1,7 @@
+django
+djangorestframework
+django-crispy-forms
+requests
+django-tables2
+jsonpickle
+gunicorn

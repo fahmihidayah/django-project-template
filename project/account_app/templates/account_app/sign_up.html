@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block container %}
+<div class="row justify-content-md-center">
+    <div class="col-md-5">
+        <br>
+        <div class="card">
+            <div class="card-header">
+                <h4>{% block container_title %}Sign Up{% endblock container_title %}</h4>
+            </div>
+            <div class="card-body">
+                {% crispy form %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock container %}
