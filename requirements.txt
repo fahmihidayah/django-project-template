@@ -5,3 +5,9 @@ requests
 django-tables2
 jsonpickle
 gunicorn
+django-environ
+pytest-pythonpath
+pytest-cov
+mixer
+pytest
+django-debug-toolbar
