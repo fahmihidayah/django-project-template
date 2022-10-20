@@ -13,14 +13,17 @@ class CreateUserSerializer(serializers.Serializer):
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
     first_name = serializers.CharField()
+    last_name = serializers.CharField()
 
     def is_valid(self, raise_exception=False):
         valid = super(CreateUserSerializer, self).is_valid(raise_exception)
         if UserModel.objects.filter(email=self.initial_data['email']).count() != 0 and valid:
-            raise serializers.ValidationError({"email" : "email already used"})
+            raise serializers.ValidationError({"email": "email already used"})
 
         return valid
 
     def create(self, validated_data):
         return UserModel.objects.create_user(email=validated_data['email'], username=validated_data['email'],
-                                        password=validated_data['password'], first_name=validated_data['first_name'])
+                                             password=validated_data['password'],
+                                             first_name=validated_data['first_name'],
+                                             last_name=validated_data['last_name'])

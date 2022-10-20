@@ -10,25 +10,45 @@ from rest_framework.authtoken.models import Token
 
 
 class LoginApiView(ObtainAuthToken):
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
+    authentication_classes = [BasicAuthentication]
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        data_user = UserSerializer(user).data
-        data_user['token'] = token.key
-
-        return get_response(message='Success', code=0, data=data_user)
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.validated_data['user']
+            token, created = Token.objects.get_or_create(user=user)
+            data_user = UserSerializer(user).data
+            data_user['token'] = token.key
+            return Response(
+                data={
+                    "message": "Success Login",
+                    "code": status.HTTP_200_OK,
+                    "error": False,
+                    "details": data_user
+                }
+            )
+        else:
+            return Response(
+                data={
+                    "message": "Error Login",
+                    "code": status.HTTP_400_BAD_REQUEST,
+                    "error": False,
+                    "details": None
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class RegisterApiView(generics.CreateAPIView):
+    authentication_classes = []
     serializer_class = CreateUserSerializer
 
-    def post(self, request, *args, **kwargs):
-        response = super(RegisterApiView, self).post(request, *args, **kwargs)
-        return get_response(data=response.data)
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if serializer.is_valid(raise_exception=False):
+            serializer.create(serializer.validated_data)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class LogoutApiView(views.APIView):

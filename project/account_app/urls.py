@@ -5,7 +5,7 @@ from . import views
 from . import apis
 
 urlpatterns = [
-    path('test_account', TemplateView.as_view(template_name='account_app/base.py.html'), name='test_account'),
+    path('test_account', TemplateView.as_view(template_name='account_app/base.html'), name='test_account'),
     path('accounts/profile', views.AccountProfileView.as_view(), name='account_profile'),
     path('sign_up', views.SignUpView.as_view(), name='sign_up'),
     path('login', views.AccountLoginView.as_view(), name='login'),
