@@ -1,8 +1,19 @@
 {% extends 'base.html'%}
 {% block container %}
-<div class="row m-5">
+<div class="row m-3">
+    <div class="card p-5 mb-4 bg-light rounded-3">
+        <div class="container-fluid py-5">
+            <h1 class="display-5 fw-bold">Welcome to this site</h1>
+            <p>Using a series of utilities, you can create this jumbotron, just like the one in previous versions of
+                Bootstrap. Check out the examples below for how you can remix and restyle it to your liking.</p>
+            <button class="btn btn-primary" type="button">Start your Journey</button>
+        </div>
+    </div>
+</div>
+<div class="row m-3">
     <div class="col-md-12">
-        <h1>Hello Dashboard</h1>
+        <button class="btn btn-primary">Login</button>
+        <button class="btn btn-success">Register</button>
     </div>
 </div>
 {% endblock container %}

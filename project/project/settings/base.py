@@ -10,17 +10,23 @@ For the full list of config and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
-import os
+
 from django.urls import reverse_lazy
 from pathlib import Path
 import environ
+import os
 
+env = environ.Env(
+    # set casting, default value
+    DEBUG=(bool, False)
+)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 env_file = Path(__file__).resolve().parent / "local.env"
 if env_file.exists():
     environ.Env.read_env(str(env_file))
+
 # STATICFILES_DIRS = [str(BASE_DIR / "static"),  str(BASE_DIR.parent / "site" / "static")]
 # MEDIA_ROOT = str(BASE_DIR / "media")
 # MEDIA_URL = "/media/"
@@ -29,10 +35,10 @@ if env_file.exists():
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-k%d@3!0-qx@q#_2b-p)d4*0ci%2h8c0fb&t25tqro==-!y(b*)'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env("DEBUG")
 
 ALLOWED_HOSTS = ['0.0.0.0', '127.0.0.1']
 
@@ -110,7 +116,7 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': env('DB_ENGINE'),
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
@@ -160,5 +166,5 @@ MEDIA_URL = '/media/'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-MEDIA_ROOT =  str(BASE_DIR / "media")
+MEDIA_ROOT = str(BASE_DIR / "media")
 LOGIN_URL = reverse_lazy("login")
