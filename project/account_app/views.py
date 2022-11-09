@@ -9,8 +9,8 @@ from django.contrib.auth import (
     logout as auth_logout, update_session_auth_hash,
 )
 from django.views.generic import TemplateView, CreateView, UpdateView
-from .forms import AuthForm, SignUpForm, UpdateUserForm, UserPasswordChangeForm
-from .models import UserModel
+from .forms import AuthForm, SignUpForm, UpdateUserForm, UserPasswordChangeForm, ProfileForm
+from .models import UserModel, Profile
 from django.conf import settings
 # Create your views here.
 
@@ -41,6 +41,7 @@ class AccountProfileView(LoginRequiredMixin, UpdateView):
     model = UserModel
     form_class = UpdateUserForm
     template_name = "account_app/account_form.html"
+    queryset = UserModel.objects.all()
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -48,6 +49,23 @@ class AccountProfileView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         messages.success(self.request, 'Profile updated')
         return reverse('account_profile')
+
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = Profile
+    form_class = ProfileForm
+    template_name = "account_app/profile_form.html"
+
+    def get_object(self, queryset=None):
+        try:
+            return self.request.user.profile
+        except:
+            profile = Profile.objects.create(user=self.request.user, phone_number='')
+            return profile
+
+    def get_success_url(self):
+        messages.success(self.request, 'Profile updated')
+        return reverse('update_profile')
 
 
 class UserChangePasswordView(PasswordChangeView):

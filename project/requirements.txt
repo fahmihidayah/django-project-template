@@ -11,3 +11,4 @@ pytest-cov
 mixer
 pytest
 django-debug-toolbar
+Pillow

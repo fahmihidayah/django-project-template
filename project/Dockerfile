@@ -1,6 +1,6 @@
 FROM python:3.9-alpine
 
-COPY . /home
+COPY .. /home
 
 WORKDIR /home
 

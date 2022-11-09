@@ -29,14 +29,14 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-header">
-                <h4>User</h4>
+                <h4>Update Profile</h4>
             </div>
             <div class="card-body">
-                <form action="{% url 'account_profile' %}" class="my-class" enctype="multipart/form-data" method="post">
+                <form action="{% url 'update_profile' %}" class="my-class" enctype="multipart/form-data" method="post">
                     {% crispy form %}
                     <button class="btn btn-primary">Save</button>
                 </form>
-                <a href="{% url 'update_profile' %}" class="btn btn-success">Update Profile</a>
+                <a class="btn btn-primary" href="{% url 'account_profile' %}">Back</a>
             </div>
         </div>
     </div>

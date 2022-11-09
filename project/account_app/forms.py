@@ -3,7 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, HTML, Submit, Div
 from django.shortcuts import reverse
 from django import forms
-from .models import UserModel
+from .models import UserModel, Profile
 
 from django.contrib.auth import (
     authenticate, get_user_model, password_validation,
@@ -91,15 +91,31 @@ class UpdateUserForm(forms.ModelForm):
         super(UpdateUserForm, self).__init__( *args, **kwargs)
 
         self.helper = FormHelper()
+        self.helper.form_tag = False
 
         self.helper.layout = Layout(
             Field("username", placeholder="Enter Email", autofocus=""),
             Field("first_name"),
             Field("last_name"),
-
-            Submit("update", "Update", css_class="btn btn-primary btn-block"),
         )
 
     class Meta:
         model = UserModel
         fields = ('username', 'first_name', "last_name")
+
+
+class ProfileForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+
+        self.helper.layout = Layout(
+            Field("phone_number"),
+            Field("image"),
+        )
+
+    class Meta:
+        model = Profile
+        fields = ('image', 'phone_number')

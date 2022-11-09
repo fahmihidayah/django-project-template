@@ -6,3 +6,4 @@
 /htmlcov
 *.pyc
 project/static/*
+/media/*
