@@ -5,7 +5,7 @@ services:
     image: postgres
     restart: always
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_DB: blog_db
       POSTGRES_PASSWORD: password
@@ -15,12 +15,22 @@ services:
     image: adminer
     restart: always
     ports:
-      - 8080:8080
+      - "8080:8080"
 
   web:
     image: web-template
     volumes:
       - ./project:/src
     ports:
-      - 8081:8000
-    command: sh -c "chmod +x entrypoint.sh && ./entrypoint.sh"
+      - "8081:8000"
+    command: sh -c "chmod +x entrypoint-prod.sh && ./entrypoint-prod.sh"
+
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./project/media:/media
+      - ./project/static:/static
+      - ./nginx:/etc/nginx/conf.d
+    ports:
+      - "8001:80"
