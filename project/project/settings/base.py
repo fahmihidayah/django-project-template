@@ -116,11 +116,14 @@ WSGI_APPLICATION = 'project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': env('DB_ENGINE'),
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': env('SQL_ENGINE', default='django.db.backends.sqlite3'),
+        'NAME': env('SQL_DATABASE', default=str(BASE_DIR / 'db.sqlite3')),
+        "USER": env("SQL_USER", default="user"),
+        "PASSWORD": env("SQL_PASSWORD", default="password"),
+        "HOST": env("SQL_HOST", default="localhost"),
+        "PORT": env("SQL_PORT", default="5432"),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
