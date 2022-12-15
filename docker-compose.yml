@@ -25,7 +25,6 @@ services:
       - "8081:8000"
     command: sh -c "chmod +x entrypoint-prod.sh && ./entrypoint-prod.sh"
 
-
   nginx:
     image: nginx
     volumes:
