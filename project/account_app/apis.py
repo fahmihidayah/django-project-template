@@ -2,41 +2,27 @@ from rest_framework import generics, status, views, viewsets
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication, TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.response import Response
 from .models import UserModel
-from .serializers import UserSerializer, CreateUserSerializer
+from .serializers import UserSerializer, CreateUserSerializer, ForgotPasswordSerializer,EmailUsernameSerializer
 from project.api_utils import get_response, get_error_response
 from rest_framework.authtoken.models import Token
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 class LoginApiView(ObtainAuthToken):
     authentication_classes = [BasicAuthentication]
+    serializer_class = EmailUsernameSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            user = serializer.validated_data['user']
-            token, created = Token.objects.get_or_create(user=user)
-            data_user = UserSerializer(user).data
-            data_user['token'] = token.key
-            return Response(
-                data={
-                    "message": "Success Login",
-                    "code": status.HTTP_200_OK,
-                    "error": False,
-                    "details": data_user
-                }
-            )
-        else:
-            return Response(
-                data={
-                    "message": "Error Login",
-                    "code": status.HTTP_400_BAD_REQUEST,
-                    "error": False,
-                    "details": None
-                },
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        refresh = RefreshToken.for_user(user)
+        data_user = UserSerializer(user).data
+        data_user['token'] = {'refresh': str(refresh), 'access': str(refresh.access_token)}
+        return Response(data=data_user)
 
 
 class RegisterApiView(generics.CreateAPIView):
@@ -57,18 +43,25 @@ class LogoutApiView(views.APIView):
         Token.objects.filter(user=request.user).delete()
         return get_response()
 
+
 class UserDetailApiView(views.APIView):
-    authentication_classes = [TokenAuthentication]
+    authentication_classes = [JWTAuthentication]
 
     def get(self, request, format=None):
-        return get_response(data={
-            'user': UserSerializer(request.user).data
-        })
+        user = UserModel.objects.get(pk=request.user.pk)
+        return Response(data=UserSerializer(request.user).data)
 
 
-class ForgotApiPassword():
-    pass
+class ForgotPasswordApiView(views.APIView):
 
+    def post(self, request):
+
+        serializer: ForgotPasswordSerializer = ForgotPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            return Response(data={
+                "message" : "Confirmation email already sent"
+            }, status=status.HTTP_200_OK)
+        return Response(data={"message": "Error"}, status=status.HTTP_400_BAD_REQUEST)
 
 class ResetPassword():
     pass

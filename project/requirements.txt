@@ -13,3 +13,5 @@ pytest
 django-debug-toolbar
 Pillow
 psycopg2-binary==2.9.3
+django-cors-headers
+djangorestframework-simplejwt
