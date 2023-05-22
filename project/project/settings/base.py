@@ -27,7 +27,7 @@ env_file = Path(__file__).resolve().parent / "local.env"
 if env_file.exists():
     environ.Env.read_env(str(env_file))
 
-# STATICFILES_DIRS = [str(BASE_DIR / "static"),  str(BASE_DIR.parent / "site" / "static")]
+STATICFILES_DIRS = [str(BASE_DIR / "static"),  str(BASE_DIR.parent / "site" / "static")]
 # MEDIA_ROOT = str(BASE_DIR / "media")
 # MEDIA_URL = "/media/"
 

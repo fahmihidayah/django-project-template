@@ -84,3 +84,7 @@ class SignUpView(CreateView):
 
     def get_success_url(self):
         return reverse('home')
+
+
+class DashboardAdminView(TemplateView):
+    template_name = 'custom_admin/base.html'
